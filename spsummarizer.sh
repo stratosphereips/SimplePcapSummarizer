@@ -35,5 +35,5 @@ PCAP_DUR=$(( ( $T2 - $T1 ) / 3600 ))
 
 
 echo "PCAP General Summary"
-echo "==============================="
-echo "Size: $PCAP_SIZE    Packets: $PCAP_PKTS    Duration: $PCAP_DUR hs"
+echo "===================="
+echo "Size: $PCAP_SIZE    Packets: $PCAP_PKTS    Duration: $PCAP_DUR hs    Last Seen Packet: $(date -d@"$T2")"
