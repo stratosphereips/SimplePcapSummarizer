@@ -43,9 +43,9 @@ echo
 
 echo "### Top Uploads"
 echo
-echo "| Origin | <-> | Destination | Upload |"
-echo "| -------|:---:|-------- | -------:|"
-tshark -qzconv,ipv4 -r $PCAP 2>/dev/null |head -n 10|grep -v "|\|IPv4\|Filter\|===" |awk '{print "| " $1  " | <-> | "  $3" | "$7 " |"}'
+echo "| Service | Origin | <-> | Destination | Upload |"
+echo "| ------- | -------|:---:|-------- | -------:|"
+tshark -qzconv,ipv4 -r $PCAP 2>/dev/null |head -n 10|grep -v "|\|IPv4\|Filter\|===" |awk '{print "| | " $1  " | <-> | "  $3" | "$7 " |"}'
 echo
 
 echo "### DNS Requests (Top 30)"
