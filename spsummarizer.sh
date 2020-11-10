@@ -50,24 +50,24 @@ echo
 
 echo "### DNS Requests (Top 30)"
 echo
-tcpdump -nn -s0 -r $PCAP dst port 53 2>/dev/null |awk -F? '{print $2}' |awk -F "(" '{print $1}' | sort| uniq -c | sort -n -k 1 -r  |head -n 30 | sed 's/^/    /'
+tcpdump -nn -s0 -r $PCAP dst port 53 2>/dev/null |awk -F? '{print $2}' |awk -F "(" '{print $1}' | sort| uniq -c | sort -n -k 1 -r  |head -n 30 | sed 's/^/  /'
 echo
 
 
 echo "### HTTP Hosts"
 echo
-tcpdump -nn -s0 -r $PCAP dst port 80 -A 2>/dev/null | grep "Host: " | awk '{print $2}'| awk -F\. '{print $(NF-1)"."$(NF)}' |sort|uniq | sed 's/^/    /'
+tcpdump -nn -s0 -r $PCAP dst port 80 -A 2>/dev/null | grep "Host: " | awk '{print $2}'| awk -F\. '{print $(NF-1)"."$(NF)}' |sort|uniq | sed 's/^/  /'
 echo
 
 echo "### User-Agents"
 echo
-tcpdump -nn -s0 -r $PCAP dst port 80 -A 2>/dev/null |grep "User-Agent: " |awk -F "User-Agent: " '{print $2}'|sort | uniq | sed 's/^/    /'
+tcpdump -nn -s0 -r $PCAP dst port 80 -A 2>/dev/null |grep "User-Agent: " |awk -F "User-Agent: " '{print $2}'|sort | uniq | sed 's/^/  /'
 echo
 
 echo "### HTTP GET Info Leaked"
 echo
 #tcpdump -nn -s0 -r $PCAP -A port 80 2>/dev/null |grep "HTTP:\ GET\ /"|awk -F "?" '{print $2}' |awk -F " HTTP/" '{print $1}' |sed -e ':a;N;$!ba;s/\&/\n/g' |sort |uniq |sed 's/^/    /'
-tcpdump -nn -s0 -r $PCAP -A port 80 and 'tcp[13] & 8 != 0' 2>/dev/null |grep "HTTP:\ GET\ /\|HTTP:\ POST\ /"|grep "?\|=" | awk -F "T " '{print $2}'|sort |uniq |sed 's/^/    /'
+tcpdump -nn -s0 -r $PCAP -A port 80 and 'tcp[13] & 8 != 0' 2>/dev/null |grep "HTTP:\ GET\ /\|HTTP:\ POST\ /"|grep "?\|=" | awk -F "T " '{print $2}'|sort |uniq |sed 's/^/  /'
 echo
 
 echo "### Other Information Leak"
