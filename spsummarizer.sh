@@ -2,6 +2,7 @@
 
 VERSION=0.2
 PCAP=$1
+IFS=$'\n'
 
 # Verifying that parameters were given
 if [ -z "$1" ];
@@ -61,7 +62,12 @@ echo
 
 echo "### User-Agents"
 echo
-tcpdump -nn -s0 -r $PCAP dst port 80 -A 2>/dev/null |grep "User-Agent: " |awk -F "User-Agent: " '{print $2}'|sort | uniq | sed 's/^/    /'
+USERAGENTS=$(tcpdump -nn -s0 -r $PCAP dst port 80 -A 2>/dev/null |grep "User-Agent: " |awk -F "User-Agent: " '{print $2}'|sort | uniq | sed 's/^/    /')
+for UA in $USERAGENTS
+do
+    UA_OS=$(python3 mod_useragent.py $UA 'os')
+    echo "- ($UA_OS) $UA"
+done
 echo
 
 echo "### HTTP GET Info Leaked"
