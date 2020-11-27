@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -o nounset
+set -o pipefail
+
 VERSION=0.2
 PCAP=$1
 IFS=$'\n'
