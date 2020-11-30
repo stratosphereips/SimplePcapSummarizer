@@ -6,8 +6,7 @@ set -o pipefail
 VERSION=0.2
 PCAP=$1
 IFS=$'\n'
-TOOL=$0
-TOOLDIR=$(dirname $TOOL)
+TOOLDIR=$(dirname $0)
 
 # Verifying that parameters were given
 if [ -z "$1" ];
@@ -73,7 +72,7 @@ do
     UA_OS=$(python3 $TOOLDIR/modules/mod_useragent.py $UA 'os')
     if [ ! $UA_OS == "UNKNOWN" ]
     then
-        UA_OS_VERSION=$(python3 modules/mod_useragent.py $UA 'os_version')
+        UA_OS_VERSION=$(python3 $TOOLDIR/modules/mod_useragent.py $UA 'os_version')
         echo "- ($UA_OS $UA_OS_VERSION) $UA"
     else
         echo "- ($UA_OS) $UA"
