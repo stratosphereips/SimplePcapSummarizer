@@ -54,7 +54,7 @@ echo
 
 echo "### DNS Requests (Top 30)"
 echo
-tcpdump -nn -s0 -r $PCAP dst port 53 2>/dev/null |awk -F? '{print $2}' |awk -F "(" '{print $1}' | sort| uniq -c | sort -n -k 1 -r  |head -n 30 | sed 's/^/   /'
+tcpdump -nn -s0 -r $PCAP dst port 53 2>/dev/null |awk -F? '{print $2}' |awk -F "(" '{print $1}' | sort| uniq -c | sort -n -k 1 -r  |head -n 30 | sed 's/^/    /'
 echo
 
 
