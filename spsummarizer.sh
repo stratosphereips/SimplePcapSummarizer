@@ -69,14 +69,8 @@ echo
 USERAGENTS=$(tcpdump -nn -s0 -r $PCAP dst port 80 -A 2>/dev/null |grep "User-Agent: " |awk -F "User-Agent: " '{print $2}'|sort | uniq | sed 's/^/    /')
 for UA in $USERAGENTS
 do
-    UA_OS=$(python3 $TOOLDIR/modules/mod_useragent.py $UA 'os')
-    if [ ! $UA_OS == "UNKNOWN" ]
-    then
-        UA_OS_VERSION=$(python3 $TOOLDIR/modules/mod_useragent.py $UA 'os_version')
-        echo "- ($UA_OS $UA_OS_VERSION) $UA"
-    else
-        echo "- ($UA_OS) $UA"
-    fi
+    UA_OS=$(python3 $TOOLDIR/modules/mod_useragent.py $UA)
+    echo "- ($UA_OS) $UA"
 done
 echo
 
