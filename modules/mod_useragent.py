@@ -1,8 +1,8 @@
 import sys
 try:
-    import woothee
+    from user_agents import parse
 except ImportError as e:
-    print("Install woothee via pip3 to use this module")
+    print("Run: pip install pyyaml ua-parser user-agents")
     sys.exit()
 
-print(woothee.parse(sys.argv[1])[sys.argv[2]])
+print(parse(sys.argv[1]))
