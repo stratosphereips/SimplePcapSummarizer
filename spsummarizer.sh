@@ -70,7 +70,8 @@ USERAGENTS=$(tcpdump -nn -s0 -r $PCAP dst port 80 -A 2>/dev/null |grep "User-Age
 for UA in $USERAGENTS
 do
     UA_OS=$(python3 $TOOLDIR/modules/mod_useragent.py $UA)
-    echo "- ($UA_OS) $UA"
+    echo "-$UA"
+    echo "    - Information extracted: $UA_OS"
 done
 echo
 
