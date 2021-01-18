@@ -83,4 +83,4 @@ echo
 
 echo "### Other Information Leak"
 echo
-tcpdump -nn -s0 -r $PCAP port 80 -A 2>/dev/null |grep "\":{\""| sed -e ':a;N;$!ba;s/\:/\n/g'| grep -i "wifi\|chrome\|access\|en\|cz\|es\|lang\|com\|loc\|lat\|lon\|imei\|mn\|android\|ios\|build\|time\|format\|[0-9][0-9]\."|sort|uniq -c |sort -n -k 1 -r
+tcpdump -nn -s0 -r $PCAP port 80 -A 2>/dev/null |grep "\":{\""| grep -i "wifi\|chrome\|access\|en\|cz\|es\|lang\|com\|loc\|lat\|lon\|imei\|mn\|android\|ios\|build\|time\|format\|[0-9][0-9]\."|sort|uniq -c |sort -n -k 1 -r
