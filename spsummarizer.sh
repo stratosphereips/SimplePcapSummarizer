@@ -81,6 +81,10 @@ echo
 tcpdump -nn -s0 -r $PCAP -A port 80 and 'tcp[13] & 8 != 0' 2>/dev/null |grep "HTTP:\ GET\ /\|HTTP:\ POST\ /"|grep "?\|=" | awk -F "T " '{print $2}'|sort |uniq |sed 's/^/    /'
 echo
 
+echo "### Viber Info Leaking (Ignore if empty)"
+echo
+tcpdump -n -s0 -r $PCAP -A 2>/dev/null | grep -E "tun[0-9]" |awk -F "tun0" '{print $2}' | awk -F. '{print "Interface: tun0, Version: "$6"."$7"."$8"."$9", Device: "$18", OS: "$21" "$24", UUID: "$51}'  | head -n 1
+
 echo "### Other Information Leak"
 echo
 tcpdump -nn -s0 -r $PCAP port 80 -A 2>/dev/null |grep "\":{\""| grep -i "wifi\|chrome\|access\|en\|cz\|es\|lang\|com\|loc\|lat\|lon\|imei\|mn\|android\|ios\|build\|time\|format\|[0-9][0-9]\."|sort|uniq -c |sort -n -k 1 -r | sed 's/^/     /'
