@@ -23,22 +23,6 @@ fi
 echo "Simple Pcap Analyzer. Version $VERSION. Author: Veronica Valeros (@verovaleros)."
 echo
 
-# Obtain size of the Pcap
-PCAP_SIZE=$(du -h $PCAP |cut -f1)
-
-# Obtain number of packets
-PCAP_PKTS=$(tcpdump -nn -r $PCAP 2>/dev/null | wc -l)
-
-# Timestamp first packet:
-T1=$(tcpdump -tt -nn -s0 -r $PCAP 2>/dev/null |head -n 1 | awk -F " IP" '{print $1}'|awk -F\. '{print $1}')
-
-# Timestamp last packet:
-T2=$(tcpdump -tt -nn -s0 -r $PCAP 2>/dev/null |tail -n 1 | awk -F " IP" '{print $1}'|awk -F\. '{print $1}')
-
-# Calculate PCAP Duration
-PCAP_DUR=$(( ( $T2 - $T1 ) / 3600 ))
-
-
 echo -e "## PCAP General Summary\n"
 echo
 echo "\`\`\`"
@@ -48,9 +32,9 @@ echo
 
 echo "### Top Uploads"
 echo
-echo "| Service | Origin | <-> | Destination | Download | Upload | Total Transferred |"
-echo "| ------- | -------|:---:|-------- | -------:| -------:| -------: |"
-tshark -qzconv,ipv4 -r $PCAP  2>/dev/null |head -n 10 |grep -v "|\|IPv4\|Filter\|===" |awk '{print "| | "$1" | <-> | "$3" | "$5" | "$7" | "$9" |"}'
+echo "| Origin | <-> | Destination | Download | Upload | Total Transferred |"
+echo "| -------|:---:|-------- | -------:| -------:| -------: |"
+tshark -qzconv,ipv4 -r $PCAP  2>/dev/null |head -n 10 |grep -v "|\|IPv4\|Filter\|===" |awk '{print "| "$1" | <-> | "$3" | "$5" | "$7" | "$9" |"}'
 echo
 
 echo "### DNS Requests (Top 30)"
@@ -77,13 +61,8 @@ echo
 
 echo "### HTTP GET Info Leaked"
 echo
-#tcpdump -nn -s0 -r $PCAP -A port 80 2>/dev/null |grep "HTTP:\ GET\ /"|awk -F "?" '{print $2}' |awk -F " HTTP/" '{print $1}' |sed -e ':a;N;$!ba;s/\&/\n/g' |sort |uniq |sed 's/^/    /'
 tcpdump -nn -s0 -r $PCAP -A port 80 and 'tcp[13] & 8 != 0' 2>/dev/null |grep "HTTP:\ GET\ /\|HTTP:\ POST\ /"|grep "?\|=" | awk -F "T " '{print $2}'|sort |uniq |sed 's/^/    /'
 echo
-
-echo "### Viber Info Leaking (Ignore if empty)"
-echo
-tcpdump -n -s0 -r $PCAP -A 2>/dev/null | grep -E "tun[0-9]" |awk -F "tun0" '{print $2}' | awk -F. '{print "Interface: tun0, Version: "$6"."$7"."$8"."$9", Device: "$18", OS: "$21" "$24", UUID: "$51}'  | head -n 1
 
 echo "### Other Information Leak"
 echo
